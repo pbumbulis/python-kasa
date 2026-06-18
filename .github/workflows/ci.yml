@@ -33,7 +33,7 @@ jobs:
         id: pre-commit-version
         run: >-
           echo "PRE_COMMIT_VERSION=$(poetry run pre-commit -V | awk '{print $2}')" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit/
           key: ${{ runner.os }}-pre-commit-${{ steps.pre-commit-version.outputs.PRE_COMMIT_VERSION }}-python-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -108,7 +108,7 @@ jobs:
         shell: bash
         run: |
           echo "POETRY_VENV_LOCATION=$(poetry config virtualenvs.path)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ${{ steps.poetry-cache-location.outputs.POETRY_VENV_LOCATION }}
@@ -130,6 +130,6 @@ jobs:
         run: |
           poetry run pytest --cov kasa --cov-report xml
       - name: "Upload coverage to Codecov"
-        uses: "codecov/codecov-action@v3"
+        uses: "codecov/codecov-action@v5"
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
